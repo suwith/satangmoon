@@ -1,0 +1,7 @@
+/* 기본 모바일 화면 크기 고정 */
+.app-container {
+  max-width: 414px; /* 앱 기본 크기 */
+  margin: 0 auto;
+  height: 100vh;
+  overflow: hidden; /* 스크롤 숨김 */
+}
