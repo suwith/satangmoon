@@ -7,7 +7,8 @@ export const chocolates = [
     is_mutual: true,
     visibility_status: "MUTUAL",
     sent_at: "2025-02-07T10:00:00Z",
-    opened_at: "2025-02-07T12:00:00Z"
+    opened_at: "2025-02-07T12:00:00Z",
+    design_type: 3
   },
   {
     id: "2",
@@ -17,7 +18,8 @@ export const chocolates = [
     is_mutual: false,
     visibility_status: "ANONYMOUS",
     sent_at: "2025-02-06T15:30:00Z",
-    opened_at: null
+    opened_at: null,
+    design_type: 5
   },
   {
     id: "3",
@@ -27,7 +29,8 @@ export const chocolates = [
     is_mutual: true,
     visibility_status: "MUTUAL",
     sent_at: "2025-02-05T09:00:00Z",
-    opened_at: "2025-02-05T12:00:00Z"
+    opened_at: "2025-02-05T12:00:00Z",
+    design_type: 1
   },
   {
     id: "4",
@@ -37,7 +40,8 @@ export const chocolates = [
     is_mutual: false,
     visibility_status: "ANONYMOUS",
     sent_at: "2025-02-06T15:30:00Z",
-    opened_at: null
+    opened_at: null,
+    design_type: 4
   },
   {
     id: "5",
@@ -47,7 +51,8 @@ export const chocolates = [
     is_mutual: true,
     visibility_status: "MUTUAL",
     sent_at: "2025-02-05T09:00:00Z",
-    opened_at: "2025-02-05T12:00:00Z"
+    opened_at: "2025-02-05T12:00:00Z",
+    design_type: 6
   },
   {
     id: "6",
@@ -57,7 +62,8 @@ export const chocolates = [
     is_mutual: false,
     visibility_status: "ANONYMOUS",
     sent_at: "2025-02-06T15:30:00Z",
-    opened_at: null
+    opened_at: null,
+    design_type: 2
   },
   {
     id: "7",
@@ -67,7 +73,8 @@ export const chocolates = [
     is_mutual: true,
     visibility_status: "MUTUAL",
     sent_at: "2025-02-05T09:00:00Z",
-    opened_at: "2025-02-05T12:00:00Z"
+    opened_at: "2025-02-05T12:00:00Z",
+    design_type: 5
   },
   {
     id: "8",
@@ -77,6 +84,7 @@ export const chocolates = [
     is_mutual: true,
     visibility_status: "MUTUAL",
     sent_at: "2025-02-05T09:00:00Z",
-    opened_at: "2025-02-05T12:00:00Z"
+    opened_at: "2025-02-05T12:00:00Z",
+    design_type: 3
   }
 ];
