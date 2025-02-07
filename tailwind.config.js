@@ -9,6 +9,13 @@ module.exports = {
             backgroundImage: {
                 'main': "url('./assets/bg2.jpg')",
             },
+            screens: {
+                'xs': '320px',  // 아이폰 SE, 작은 화면 지원
+                'sm': '414px',  // 기본 모바일 (iPhone 14 Pro 등)
+                'md': '768px',  // 태블릿
+                'lg': '1024px', // 작은 데스크탑
+                'xl': '1280px', // 일반 데스크탑
+            },
         },
     },
     plugins: [],
