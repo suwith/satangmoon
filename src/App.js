@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 function App() {
   return (
       <Router>
-        <div className="w-full max-w-[428px] mx-auto min-h-screen bg-gray-100">
+        <div className="w-full max-w-[428px] mx-auto min-h-screen bg-main bg-cover">
           <div>
             <Routes>
               <Route path="/" element={<LoginPage />} />
