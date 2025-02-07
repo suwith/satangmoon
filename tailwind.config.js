@@ -8,6 +8,7 @@ module.exports = {
         extend: {
             backgroundImage: {
                 'main': "url('./assets/bg2.jpg')",
+                'letter': "url('./assets/letter_bg.svg')",
             },
             screens: {
                 'xs': '320px',  // 아이폰 SE, 작은 화면 지원
