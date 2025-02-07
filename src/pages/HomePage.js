@@ -141,6 +141,9 @@ const HomePage = () => {
             {user.real_name}님에게 초콜릿 보내기
           </button>
 
+          {/* 모달 렌더링 */}
+          {isModalOpen && <SendChocoModal onClose={() => setIsModalOpen(false)} />}
+
           <button className="w-full h-12 bg-red-300 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center p-1 shadow-gray-500 shadow-md">
             <img src={letterIcon} alt="초콜릿함 보기" className="w-7 h-7 mr-2" />
             내 초콜릿함 보러가기
