@@ -18,6 +18,7 @@ import { chocolates } from "../data/ChocolateData";
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import SendChocoModal from '../components/SendChocoModal';
 import ReadChocoModal from '../components/ReadChocoModal';
+import { useNavigate } from 'react-router-dom';
 
 // 초콜릿이 배치될 위치 (각 페이지별 6개씩)
 const chocolatePositions = [
@@ -42,6 +43,7 @@ const chocolateImages = {
 const HomePage = () => {
   const user = users[0];
   const chocoList = chocolates;
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   // 현재 페이지 (0: 첫 번째 상자, 1: 두 번째 상자 ...)
   const [currentPage, setCurrentPage] = useState(0);
@@ -163,7 +165,9 @@ const HomePage = () => {
 
 
 
-<button className="w-full h-12 bg-red-300 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center p-1 shadow-gray-500 shadow-md">
+<button onClick={() => navigate("/")}
+  className="w-full h-12 bg-red-300 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center p-1 shadow-gray-500 shadow-md"
+>
             <img src={letterIcon} alt="초콜릿함 보기" className="w-7 h-7 mr-2" />
             내 초콜릿함 보러가기
           </button>
