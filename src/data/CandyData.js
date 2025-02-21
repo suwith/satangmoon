@@ -1,4 +1,4 @@
-export const chocolates = [
+export const candy = [
   {
     id: "1",
     sender_id: "1",
