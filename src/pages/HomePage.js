@@ -11,12 +11,17 @@ import candy6 from "../assets/candy6.svg";
 import anonymousCandy from "../assets/candy_icon.svg";
 // 더미데이터
 import { users } from "../data/UserData";
-import { candy } from "../data/CandyData";
+import useCandy from '../hooks/useCandy';
+// 아이콘
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import SendCandyModal from '../components/SendCandyModal';
 import ReadCandyModal from '../components/ReadCandyModal';
 import { useNavigate } from 'react-router-dom';
 import candyLogo from '../assets/candy_logo.svg';
+import { decodeUserInfo } from '../utils/UserUtils';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../state/userState';
+import useUserInfo from '../hooks/useUserInfo';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
@@ -39,14 +44,18 @@ const candyImages = {
 };
 
 const HomePage = () => {
-  const user = users[0];
-  const candyList = candy;
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const { loading, error } = useUserInfo(); // 홈 페이지에서 사용자 정보 불러오기
+
+  const user = useRecoilValue(userState);
+  const navigate = useNavigate();
+
+  // useCandy 훅을 사용하여 API 데이터를 가져옴
+  const { candyList } = useCandy();
 
   // 현재 페이지 (0: 첫 번째 상자, 1: 두 번째 상자 ...)
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCandy, setSelectedCandy] = useState(null); // 클릭된 사탕 데이터
+  const [selectedCandy, setSelectedCandy] = useState(null);
 
   // 전체 페이지 수 계산
   const totalPages = Math.ceil(candyList.length / 6);
@@ -64,6 +73,14 @@ const HomePage = () => {
     }
   };
 
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
     <div className="flex flex-col items-center min-h-screen p-4">
       <div className="flex relative justify-center h-full my-7">
@@ -72,10 +89,9 @@ const HomePage = () => {
 
       <div className="w-full max-w-sm justify-center h-full relative">
 
-
         {/* 사탕 개수 표시 */}
         <div className="text-center mb-10">
-          <h2 className="text-2xl font-semibold mb-1">{user.real_name}님의 사탕함</h2>
+          <h2 className="text-2xl font-semibold mb-1">{user.name}님의 사탕함</h2>
           <div className="text-gray-500 text-md font-bold">
             {candyList.length > 0
               ? `${candyList.length}개의 사탕이 담겨 있어요`
@@ -144,13 +160,12 @@ const HomePage = () => {
           </div>
         )}
 
-
         {/* 메시지 모달 */}
         {selectedCandy && (
           <ReadCandyModal
             isOpen={!!selectedCandy}
             onClose={() => setSelectedCandy(null)}
-            senderName={users.find(u => u.id === selectedCandy.sender_id)?.real_name || "익명"}
+            senderName={users.find(u => u.id === selectedCandy.sender_id)?.name || "익명"}
             message={selectedCandy.message}
           />
         )}
@@ -172,8 +187,6 @@ const HomePage = () => {
             내 사탕함 가기
           </button>
         </div>
-
-
       </div>
     </div>
   );
