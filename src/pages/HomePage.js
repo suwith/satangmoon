@@ -10,7 +10,6 @@ import candy5 from "../assets/candy5.svg";
 import candy6 from "../assets/candy6.svg";
 import anonymousCandy from "../assets/candy_icon.svg";
 // 더미데이터
-import { users } from "../data/UserData";
 import useCandy from '../hooks/useCandy';
 // 아이콘
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -68,7 +67,7 @@ const HomePage = () => {
 
   // 사탕 클릭 핸들러
   const handleCandyClick = (candy) => {
-    if (candy.is_mutual) {
+    if (candy.visibilityStatus === "ANONYMOUS") {
       setSelectedCandy(candy);
     }
   };
@@ -111,17 +110,22 @@ const HomePage = () => {
           {candyOnPage.map((candy, index) => (
             <img
               key={candy.id}
-              src={candy.is_mutual ? candyImages[candy.design_type] : anonymousCandy} // 익명 여부에 따라 이미지 변경
-              alt={`사탕 ${candy.is_mutual ? candy.design_type : "익명"}`}
-              className={`absolute w-[15%] cursor-${candy.is_mutual ? "pointer" : "not-allowed"}`}
+              src={candy.visibilityStatus === "ANONYMOUS" ? anonymousCandy : candyImages[candy.designType]} // 익명 여부에 따라 이미지 변경
+              alt={`사탕 ${candy.visibilityStatus === "ANONYMOUS" ? "익명" : candy.designType}`}
+              className={`absolute w-[15%] cursor-${candy.visibilityStatus === "ANONYMOUS" ? "not-allowed" : "pointer"}`}
               style={{
                 top: candyPositions[index % 6].top,
                 left: candyPositions[index % 6].left,
                 transform: "translate(-50%, -50%)"
               }}
-              onClick={() => handleCandyClick(candy)}
+              onClick={() => {
+                if (candy.visibilityStatus !== "ANONYMOUS") {
+                  handleCandyClick(candy); // 익명이 아닌 경우에만 클릭 핸들러 호출
+                }
+              }}
             />
           ))}
+
 
           {/* 페이지네이션 버튼 (양옆에 배치) */}
           {candyList.length > 6 && (
@@ -165,7 +169,7 @@ const HomePage = () => {
           <ReadCandyModal
             isOpen={!!selectedCandy}
             onClose={() => setSelectedCandy(null)}
-            senderName={users.find(u => u.id === selectedCandy.sender_id)?.name || "익명"}
+            senderName={selectedCandy.visibilityStatus === "ANONYMOUS"? "익명" : selectedCandy.sender.name}
             message={selectedCandy.message}
           />
         )}

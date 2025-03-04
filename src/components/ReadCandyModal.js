@@ -1,5 +1,4 @@
 import React from "react";
-import { IoClose } from "react-icons/io5"; // X 아이콘
 
 const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
   if (!isOpen) return null; // 모달이 열리지 않았으면 렌더링 X
