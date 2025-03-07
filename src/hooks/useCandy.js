@@ -11,32 +11,14 @@ const useCandy = () => {
   useEffect(() => {
     const fetchCandyData = async () => {
       try {
-        const kakaoId = decodeUserInfo().userKakaoId;
-        // const kakaoId = process.env.REACT_APP_USER_KAKAOID;
-        console.log(kakaoId);
-        // API 호출 (백엔드 API URL을 넣어주세요)
-        const response = await axiosInstance.get(`/chocolates/${kakaoId}`);
-        console.log(response);
-
+        const id = decodeUserInfo().id;
+        const response = await axiosInstance.get(`/chocolates/${id}`);
         // API 데이터 매핑
         const mappedCandyList = response.data.map((item) => ({
           id: item.id,
           message: item.message,
           designType: item.designType,
-          isMutual: item.isMutual,
-          sender: {
-            id: item.sender.id,
-            name: item.sender.name,
-            email: item.sender.email,
-            shareableLink: item.sender.shareableLink
-          },
-          receiver: {
-            id: item.receiver.id,
-            name: item.receiver.name,
-            email: item.receiver.email,
-            shareableLink: item.receiver.shareableLink
-          },
-          sentAt: item.sentAt,
+          sender: item.sender.name,
           visibilityStatus: item.visibilityStatus
         }));
 

@@ -15,7 +15,7 @@ import useCandy from '../hooks/useCandy';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import SendCandyModal from '../components/SendCandyModal';
 import ReadCandyModal from '../components/ReadCandyModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import candyLogo from '../assets/candy_logo.svg';
 import { decodeUserInfo } from '../utils/UserUtils';
 import { useRecoilValue } from 'recoil';
@@ -43,10 +43,15 @@ const candyImages = {
 };
 
 const HomePage = () => {
-  const { loading, error } = useUserInfo(); // 홈 페이지에서 사용자 정보 불러오기
+  const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
+  const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
 
-  const user = useRecoilValue(userState);
+  // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
+  const isAuthorized = user?.id === decodedUser?.id;
+
+
   const navigate = useNavigate();
+
 
   // useCandy 훅을 사용하여 API 데이터를 가져옴
   const { candyList } = useCandy();
@@ -56,19 +61,37 @@ const HomePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCandy, setSelectedCandy] = useState(null);
 
-  // 전체 페이지 수 계산
-  const totalPages = Math.ceil(candyList.length / 6);
+  // 전체 페이지 수 계산 (user.candyCount가 있을 때는 그것을 기준으로 페이지 수 계산)
+  const totalPages = user
+    ? Math.ceil(user.candyCount / 6) // user가 있을 때는 user.candyCount를 기준으로 계산
+    : Math.ceil(candyList.length / 6); // user가 없으면 기존 candyList.length 기준으로 계산
 
   // 현재 페이지의 사탕 리스트 (6개씩 슬라이싱)
-  const candyOnPage = candyList.slice(
-    currentPage * 6,
-    Math.min((currentPage + 1) * 6, candyList.length)
-  );
+  const candyOnPage = user
+    ? Array.from({ length: user.candyCount }).map((_, index) => ({
+      visibilityStatus: "ANONYMOUS",
+      id: index,
+    })) // user.candyCount만큼 익명 사탕을 표시
+    : candyList.slice(currentPage * 6, Math.min((currentPage + 1) * 6, candyList.length)); // 아니면 기존 candyList
+
 
   // 사탕 클릭 핸들러
   const handleCandyClick = (candy) => {
     if (candy.visibilityStatus === "ANONYMOUS") {
       setSelectedCandy(candy);
+    }
+  };
+
+
+
+  // "내 사탕함 가기" 버튼 클릭 시 처리
+  const handleGoToCandyBox = () => {
+    if (decodedUser) {
+      // 로그인한 유저가 있을 경우 /user.KakaoId 경로로 이동
+      navigate(`/home`);
+    } else {
+      // 로그인하지 않은 유저는 로그인 페이지로 이동
+      navigate("/");
     }
   };
 
@@ -90,11 +113,18 @@ const HomePage = () => {
 
         {/* 사탕 개수 표시 */}
         <div className="text-center mb-10">
-          <h2 className="text-2xl font-semibold mb-1">{user.name}님의 사탕함</h2>
+          <h2 className="text-2xl font-semibold mb-1">{(user)?user.name : decodedUser.name}님의 사탕함</h2>
           <div className="text-gray-500 text-md font-bold">
-            {candyList.length > 0
-              ? `${candyList.length}개의 사탕이 담겨 있어요`
-              : "아직 담긴 사탕이 없어요"}
+            {
+              user ? (
+                user.candyCount > 0
+                  ? `${user.candyCount}개의 사탕이 담겨 있어요`
+                  : "아직 담긴 사탕이 없어요"
+              ) : candyList.length > 0
+                ? `${candyList.length}개의 사탕이 담겨 있어요`
+                : "아직 담긴 사탕이 없어요"
+            }
+
           </div>
         </div>
 
@@ -107,24 +137,42 @@ const HomePage = () => {
           />
 
           {/* 사탕 배치 (design_type에 따라 이미지 변경) */}
-          {candyOnPage.map((candy, index) => (
-            <img
-              key={candy.id}
-              src={candy.visibilityStatus === "ANONYMOUS" ? anonymousCandy : candyImages[candy.designType]} // 익명 여부에 따라 이미지 변경
-              alt={`사탕 ${candy.visibilityStatus === "ANONYMOUS" ? "익명" : candy.designType}`}
-              className={`absolute w-[15%] cursor-${candy.visibilityStatus === "ANONYMOUS" ? "not-allowed" : "pointer"}`}
-              style={{
-                top: candyPositions[index % 6].top,
-                left: candyPositions[index % 6].left,
-                transform: "translate(-50%, -50%)"
-              }}
-              onClick={() => {
-                if (candy.visibilityStatus !== "ANONYMOUS") {
-                  handleCandyClick(candy); // 익명이 아닌 경우에만 클릭 핸들러 호출
-                }
-              }}
-            />
-          ))}
+          {user ? (
+            // 페이지 주인이 user일 때는 익명 사탕만 표시
+            Array.from({ length: user.candyCount }).map((_, index) => (
+              <img
+                key={index}
+                src={anonymousCandy}
+                alt={`익명 사탕 ${index + 1}`}
+                className="absolute w-[15%] cursor-not-allowed"
+                style={{
+                  top: candyPositions[index % 6].top,
+                  left: candyPositions[index % 6].left,
+                  transform: "translate(-50%, -50%)"
+                }}
+              />
+            ))
+          ) : (
+            // 로그인된 유저가 페이지 주인이 아닌 경우 사탕을 익명 또는 디자인에 따라 표시
+            candyOnPage.map((candy, index) => (
+              <img
+                key={candy.id}
+                src={candy.visibilityStatus === "ANONYMOUS" ? anonymousCandy : candyImages[candy.designType]}
+                alt={`사탕 ${candy.visibilityStatus === "ANONYMOUS" ? "익명" : candy.designType}`}
+                className={`absolute w-[15%] cursor-${candy.visibilityStatus === "ANONYMOUS" ? "not-allowed" : "pointer"}`}
+                style={{
+                  top: candyPositions[index % 6].top,
+                  left: candyPositions[index % 6].left,
+                  transform: "translate(-50%, -50%)"
+                }}
+                onClick={() => {
+                  if (isAuthorized && candy.visibilityStatus !== "ANONYMOUS") {
+                    handleCandyClick(candy); // 로그인된 유저의 KakaoId와 URL의 KakaoId가 같을 때만 클릭 가능
+                  }
+                }}
+              />
+            ))
+          )}
 
 
           {/* 페이지네이션 버튼 (양옆에 배치) */}
@@ -169,7 +217,7 @@ const HomePage = () => {
           <ReadCandyModal
             isOpen={!!selectedCandy}
             onClose={() => setSelectedCandy(null)}
-            senderName={selectedCandy.visibilityStatus === "ANONYMOUS"? "익명" : selectedCandy.sender.name}
+            senderName={selectedCandy.visibilityStatus === "ANONYMOUS" ? "익명" : selectedCandy.sender.name}
             message={selectedCandy.message}
           />
         )}
@@ -185,7 +233,7 @@ const HomePage = () => {
             사탕 보내기
           </button>
           <button
-            onClick={() => navigate("/")}
+            onClick={handleGoToCandyBox}  // 내 사탕함 가기 버튼 클릭 시 리디렉션
             className="flex-1 h-12 bg-yellow-100 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
           >
             내 사탕함 가기

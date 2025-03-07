@@ -16,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/:id" element={<HomePage />} />
             <Route path="/oauth2/success" element={<KakaoCallback />} />
           </Routes>
         </div>
