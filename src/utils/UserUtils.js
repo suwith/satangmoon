@@ -1,13 +1,8 @@
 import {jwtDecode} from "jwt-decode";
 import {getToken} from "./token";
-// /**
-//  * JWT에서 사용자 정보를 디코딩하는 함수
-//  * @returns {{ userId: number, userName: string, userImage: string } | null} 사용자 정보 객체 또는 null
-//  */
-
 /**
  * JWT에서 사용자 정보를 디코딩하는 함수
- * @returns {{ userKakaoId: string } | null} 사용자 정보 객체 또는 null
+ * @returns {{ id: number, name: string, email: string, shareableLink: string } | null} 사용자 정보 객체 또는 null
  */
 
 
@@ -17,12 +12,11 @@ export const decodeUserInfo = () => {
 
     try {
         const decoded = jwtDecode(token);
-
         return {
-            // userId: decoded.userId,
-            // userName: decoded.name,
-            // userImage: decoded.image || userImage,
-            userKakaoId: decoded.sub
+            id: decoded.sub,
+            name: decoded.name,
+            email: decoded.email,
+            shareableLink: decoded.shareableLink,
         };
     } catch (error) {
         console.error("Error decoding JWT:", error);
