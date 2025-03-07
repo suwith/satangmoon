@@ -3,6 +3,7 @@ import { RecoilRoot } from "recoil";  // RecoilRoot 추가
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import bottom from "./assets/bottom.svg";
+import KakaoCallback from "./pages/KakaoCallback";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
 
           <Routes>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/home" element={<HomePage />} />
             <Route path="/:KakaoId" element={<HomePage />} />
+            <Route path="/oauth2/success" element={<KakaoCallback />} />
           </Routes>
         </div>
       </Router>
