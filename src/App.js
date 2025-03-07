@@ -14,7 +14,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/home" element={<HomePage />} />
+            <Route path="/:KakaoId" element={<HomePage />} />
           </Routes>
         </div>
       </Router>

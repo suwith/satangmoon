@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // 이미지
 import caseEmpty from '../assets/candy_box.svg';
 // 사탕 이미지 (design_type에 따라 사용)
@@ -15,7 +15,7 @@ import useCandy from '../hooks/useCandy';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import SendCandyModal from '../components/SendCandyModal';
 import ReadCandyModal from '../components/ReadCandyModal';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import candyLogo from '../assets/candy_logo.svg';
 import { decodeUserInfo } from '../utils/UserUtils';
 import { useRecoilValue } from 'recoil';
@@ -43,9 +43,10 @@ const candyImages = {
 };
 
 const HomePage = () => {
+  const { receiverKakaoId } = useParams(); // URL에서 receiverKakaoId 받기
   const { loading, error } = useUserInfo(); // 홈 페이지에서 사용자 정보 불러오기
 
-  const user = useRecoilValue(userState);
+  const user = useRecoilValue(userState); // 로그인한 유저 정보
   const navigate = useNavigate();
 
   // useCandy 훅을 사용하여 API 데이터를 가져옴
@@ -69,6 +70,20 @@ const HomePage = () => {
   const handleCandyClick = (candy) => {
     if (candy.visibilityStatus === "ANONYMOUS") {
       setSelectedCandy(candy);
+    }
+  };
+
+  // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
+  const isAuthorized = user?.id === receiverKakaoId;
+
+  // "내 사탕함 가기" 버튼 클릭 시 처리
+  const handleGoToCandyBox = () => {
+    if (user) {
+      // 로그인한 유저가 있을 경우 /user.KakaoId 경로로 이동
+      navigate(`/${user.id}`);
+    } else {
+      // 로그인하지 않은 유저는 로그인 페이지로 이동
+      navigate("/");
     }
   };
 
@@ -119,13 +134,12 @@ const HomePage = () => {
                 transform: "translate(-50%, -50%)"
               }}
               onClick={() => {
-                if (candy.visibilityStatus !== "ANONYMOUS") {
-                  handleCandyClick(candy); // 익명이 아닌 경우에만 클릭 핸들러 호출
+                if (isAuthorized && candy.visibilityStatus !== "ANONYMOUS") {
+                  handleCandyClick(candy); // 로그인된 유저의 KakaoId와 URL의 KakaoId가 같을 때만 클릭 가능
                 }
               }}
             />
           ))}
-
 
           {/* 페이지네이션 버튼 (양옆에 배치) */}
           {candyList.length > 6 && (
@@ -169,7 +183,7 @@ const HomePage = () => {
           <ReadCandyModal
             isOpen={!!selectedCandy}
             onClose={() => setSelectedCandy(null)}
-            senderName={selectedCandy.visibilityStatus === "ANONYMOUS"? "익명" : selectedCandy.sender.name}
+            senderName={selectedCandy.visibilityStatus === "ANONYMOUS" ? "익명" : selectedCandy.sender.name}
             message={selectedCandy.message}
           />
         )}
@@ -185,7 +199,7 @@ const HomePage = () => {
             사탕 보내기
           </button>
           <button
-            onClick={() => navigate("/")}
+            onClick={handleGoToCandyBox}  // 내 사탕함 가기 버튼 클릭 시 리디렉션
             className="flex-1 h-12 bg-yellow-100 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
           >
             내 사탕함 가기
