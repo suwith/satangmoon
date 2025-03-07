@@ -8,7 +8,7 @@ import candy3 from "../assets/candy3.svg";
 import candy4 from "../assets/candy4.svg";
 import candy5 from "../assets/candy5.svg";
 import candy6 from "../assets/candy6.svg";
-import anonymousCandy from "../assets/candy_icon.svg";
+import anonymousCandy from "../assets/candy_wrapped.svg";
 // 더미데이터
 import useCandy from '../hooks/useCandy';
 // 아이콘
@@ -26,10 +26,10 @@ import useUserInfo from '../hooks/useUserInfo';
 const candyPositions = [
   { top: "28.8%", left: "23.5%" },
   { top: "28.8%", left: "50%" },
-  { top: "28.8%", left: "76.6%" },
-  { top: "53.6%", left: "37.5%" },
-  { top: "53.6%", left: "63.3%" },
-  { top: "77.5%", left: "50%" }
+  { top: "28.8%", left: "76.4%" },
+  { top: "53.9%", left: "35.4%" },
+  { top: "53.9%", left: "63.3%" },
+  { top: "78.1%", left: "50%" }
 ];
 
 // 사탕 이미지 매핑
