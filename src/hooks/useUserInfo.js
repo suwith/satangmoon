@@ -1,37 +1,29 @@
 // hooks/useUserInfo.js
 import { useState, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { userState } from '../state/userState';  // userState Atom
 import axiosInstance from '../utils/axiosInstance'; // axios 인스턴스
+import { useParams } from 'react-router-dom';
 import { decodeUserInfo } from '../utils/UserUtils'; // 디코딩 유틸리티
 
 const useUserInfo = () => {
-  const setUser = useSetRecoilState(userState); // Recoil 상태 업데이트 함수
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+
+  const { id: paramId } = useParams(); // URL에서 id 추출
+  const decodedUser = decodeUserInfo(); // decodeUserInfo에서 가져온 사용자 정보
+
+  const id = paramId ? paramId : decodedUser.id; // decodeUserInfo().id가 있으면 그것을 사용하고, 없으면 Params에서 id를 사용
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const decodedUserInfo = decodeUserInfo(); // 디코딩해서 유저 카카오 ID 가져오기
-
-      if (!decodedUserInfo || !decodedUserInfo.userKakaoId) {
-        setError("유효한 사용자 정보를 찾을 수 없습니다.");
-        setLoading(false);
-        return;
-      }
-
-      const { userKakaoId } = decodedUserInfo;
-      // const userKakaoId = process.env.REACT_APP_USER_KAKAOID;
-
       try {
         // API 호출
-        const response = await axiosInstance.get(`/api/users/${userKakaoId}`);
-        // 사용자 정보 업데이트 (userState에 저장)
+        const response = await axiosInstance.get(`/chocolates/public/${id}`);
+        // 사용자 정보 업데이트 (user 상태에 저장)
         setUser({
-          id: response.data.id,
-          name: response.data.name,
-          email: response.data.email,
-          shareableLink: response.data.shareableLink
+          id: id,
+          name: response.data.nickname,
+          candyCount: response.data.chocolateCount,
         });
 
 
@@ -41,11 +33,12 @@ const useUserInfo = () => {
         setLoading(false);
       }
     };
+    if (id) { // id가 있을 때만 데이터를 가져옵니다.
+      fetchUserData(); // 컴포넌트 마운트 시 호출
+    }
+  }, [id]); // id가 변경될 때마다 재호출
 
-    fetchUserData(); // 컴포넌트 마운트 시 호출
-  }, [setUser]);
-
-  return { loading, error };  // 로딩 및 에러 상태를 반환
+  return { user, loading, error };  // 사용자 데이터, 로딩 상태, 에러 상태를 반환
 };
 
 export default useUserInfo;
