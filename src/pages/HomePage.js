@@ -46,7 +46,7 @@ const candyImages = {
 
 const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
-  const { kakaoLogin } = useLogin(); 
+  const { kakaoLogin } = useLogin();
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
   const location = useLocation(); // 현재 경로 정보
 
@@ -60,6 +60,8 @@ const HomePage = () => {
   // useCandy 훅을 사용하여 API 데이터를 가져옴
   const { candyList } = useCandy();
 
+  console.log(candyList);
+
   // 현재 페이지 (0: 첫 번째 상자, 1: 두 번째 상자 ...)
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,32 +73,33 @@ const HomePage = () => {
     : Math.ceil(candyList.length / 6); // user가 없으면 기존 candyList.length 기준으로 계산
 
   // 현재 페이지의 사탕 리스트 (6개씩 슬라이싱)
-  const candyOnPage = user
-    ? Array.from({ length: user.candyCount }).map((_, index) => ({
+  const candyOnPage = isAuthorized
+    ? candyList.slice(currentPage * 6, Math.min((currentPage + 1) * 6, candyList.length)) // isAuthorized 시 candyList 사용
+    : Array.from({ length: user?.candyCount }).map((_, index) => ({
       visibilityStatus: "ANONYMOUS",
       id: index,
-    })) // user.candyCount만큼 익명 사탕을 표시
-    : candyList.slice(currentPage * 6, Math.min((currentPage + 1) * 6, candyList.length)); // 아니면 기존 candyList
-
+    }));
 
   // 사탕 클릭 핸들러
   const handleCandyClick = (candy) => {
-    if (candy.visibilityStatus === "ANONYMOUS") {
+    if (candy.visibilityStatus === "MUTUAL") {
       setSelectedCandy(candy);
     }
   };
 
-  const handleSendCandy = () => {
+  const handleSendCandyClick = () => {
     // 로그인 여부 확인
     if (decodedUser) { // 로그인 한 유저
         setIsModalOpen(true);
     }else{ // 로그인 하지 않은 유저
+      alert("로그인이 필요한 기능입니다."); // 알림 팝업 띄우기
+
       localStorage.setItem("returnUrl", location.pathname);
       navigate("/");
     }
   };
 
-  // "내 사탕함 가기" 버튼 클릭 시 처리
+  // 내 사탕함 가기 버튼 클릭 시 처리
   const handleGoToCandyBox = () => {
     if (decodedUser) {
       // 로그인한 유저가 있을 경우 /user.KakaoId 경로로 이동
@@ -128,7 +131,7 @@ const HomePage = () => {
           <h2 className="text-2xl font-semibold mb-1">{(user)?user.name : decodedUser.name}님의 사탕함</h2>
           <div className="text-gray-500 text-md font-bold">
             {
-              user ? (
+              isAuthorized ? (
                 user.candyCount > 0
                   ? `${user.candyCount}개의 사탕이 담겨 있어요`
                   : "아직 담긴 사탕이 없어요"
@@ -149,27 +152,12 @@ const HomePage = () => {
           />
 
           {/* 사탕 배치 (design_type에 따라 이미지 변경) */}
-          {user ? (
-            // 페이지 주인이 user일 때는 익명 사탕만 표시
-            Array.from({ length: user.candyCount }).map((_, index) => (
-              <img
-                key={index}
-                src={anonymousCandy}
-                alt={`익명 사탕 ${index + 1}`}
-                className="absolute w-[15%] cursor-not-allowed"
-                style={{
-                  top: candyPositions[index % 6].top,
-                  left: candyPositions[index % 6].left,
-                  transform: "translate(-50%, -50%)"
-                }}
-              />
-            ))
-          ) : (
-            // 로그인된 유저가 페이지 주인이 아닌 경우 사탕을 익명 또는 디자인에 따라 표시
+          {isAuthorized ? (
+            // 페이지 주인이 user일 때는 사탕을 익명 또는 디자인에 따라 표시
             candyOnPage.map((candy, index) => (
               <img
                 key={candy.id}
-                src={candy.visibilityStatus === "ANONYMOUS" ? anonymousCandy : candyImages[candy.designType]}
+                src={candy.visibilityStatus === "ANONYMOUS" ? anonymousCandy :  candyImages[candy.designType] }
                 alt={`사탕 ${candy.visibilityStatus === "ANONYMOUS" ? "익명" : candy.designType}`}
                 className={`absolute w-[15%] cursor-${candy.visibilityStatus === "ANONYMOUS" ? "not-allowed" : "pointer"}`}
                 style={{
@@ -183,6 +171,20 @@ const HomePage = () => {
                   }
                 }}
               />
+            ))
+          ) : (
+            // 로그인된 유저가 페이지 주인이 아닌 경우 익명 사탕만 표시
+            Array.from({ length: user.candyCount }).map((_, index) => (
+            <img
+              key={index}
+              src={anonymousCandy}
+              alt={`익명 사탕 ${index + 1}`}
+              className="absolute w-[15%] cursor-not-allowed"
+              style={{
+                top: candyPositions[index % 6].top,
+                left: candyPositions[index % 6].left,
+                transform: "translate(-50%, -50%)"
+              }}/>
             ))
           )}
 
@@ -229,7 +231,7 @@ const HomePage = () => {
           <ReadCandyModal
             isOpen={!!selectedCandy}
             onClose={() => setSelectedCandy(null)}
-            senderName={selectedCandy.visibilityStatus === "ANONYMOUS" ? "익명" : selectedCandy.sender.name}
+            senderName={selectedCandy.visibilityStatus === "ANONYMOUS" ? "익명" : selectedCandy.sender}
             message={selectedCandy.message}
           />
         )}
@@ -239,11 +241,9 @@ const HomePage = () => {
         {/* 버튼 */}
         <div className="flex flex-row space-x-2 items-center justify-center mt-10">
           <button
-            onClick={() => {
-              handleSendCandy();
-            }
-          }
+            onClick={handleSendCandyClick}
             className="flex-1 h-12 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
+            disabled={isAuthorized}
           >
             사탕 보내기
           </button>

@@ -18,7 +18,7 @@ const useCandy = () => {
           id: item.id,
           message: item.message,
           designType: item.designType,
-          sender: item.sender.name,
+          sender: item.sender,
           visibilityStatus: item.visibilityStatus
         }));
 
