@@ -8,7 +8,7 @@ const useLogin = () => {
     const [error, setError] = useState(null);
 
     // ✅ 카카오 로그인 버튼 클릭 시 카카오 로그인 페이지로 이동
-    const kakaoLogin = () => {
+    const kakaoLogin = (returnUrl = null) => {
         window.location.href = KAKAO_AUTH_URL;
     };
 
