@@ -109,6 +109,21 @@ const HomePage = () => {
       navigate("/");
     }
   };
+  const handleCopyLink = () => {
+    if (!decodedUser?.shareableLink) {
+      alert("공유할 링크가 없습니다.");
+      return;
+    }
+
+    navigator.clipboard.writeText(decodedUser.shareableLink)
+      .then(() => {
+        alert("링크가 복사되었습니다! 🎉");
+      })
+      .catch(err => {
+        console.error("링크 복사 실패:", err);
+        alert("링크 복사에 실패했습니다. 다시 시도해주세요.");
+      });
+  };
 
   if (loading) {
     return <div>로딩 중...</div>;
@@ -238,22 +253,35 @@ const HomePage = () => {
 
         {isModalOpen && <SendCandyModal onClose={() => setIsModalOpen(false)} />}
 
-        {/* 버튼 */}
-        <div className="flex flex-row space-x-2 items-center justify-center mt-10">
-          <button
-            onClick={handleSendCandyClick}
-            className="flex-1 h-12 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
-            disabled={isAuthorized}
-          >
-            사탕 보내기
-          </button>
-          <button
-            onClick={handleGoToCandyBox}  // 내 사탕함 가기 버튼 클릭 시 리디렉션
-            className="flex-1 h-12 bg-yellow-100 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
-          >
-            내 사탕함 가기
-          </button>
-        </div>
+        {isAuthorized ? (
+          <div className="flex items-center justify-center mt-10">
+            <button
+              className="flex-1 h-12 w-full bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
+              onClick={handleCopyLink}
+            >
+              내 사탕함 공유 링크 복사하기
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-row space-x-2 items-center justify-center mt-10">
+            {/* 버튼 */}
+            <button
+              onClick={handleSendCandyClick}
+              className="flex-1 h-12 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
+              disabled={isAuthorized}
+            >
+              사탕 보내기
+            </button>
+            <button
+              onClick={handleGoToCandyBox}  // 내 사탕함 가기 버튼 클릭 시 리디렉션
+              className="flex-1 h-12 bg-yellow-100 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
+            >
+              내 사탕함 가기
+            </button>
+          </div>
+        )}
+
+
       </div>
     </div>
   );
