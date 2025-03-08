@@ -21,6 +21,8 @@ import { decodeUserInfo } from '../utils/UserUtils';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../state/userState';
 import useUserInfo from '../hooks/useUserInfo';
+import useLogin from '../hooks/useLogin';
+import { useLocation } from 'react-router-dom';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
@@ -44,7 +46,9 @@ const candyImages = {
 
 const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
+  const { kakaoLogin } = useLogin(); 
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
+  const location = useLocation(); // 현재 경로 정보
 
   // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
   const isAuthorized = user?.id === decodedUser?.id;
@@ -82,7 +86,15 @@ const HomePage = () => {
     }
   };
 
-
+  const handleSendCandy = () => {
+    // 로그인 여부 확인
+    if (decodedUser) { // 로그인 한 유저
+        setIsModalOpen(true);
+    }else{ // 로그인 하지 않은 유저
+      localStorage.setItem("returnUrl", location.pathname);
+      navigate("/");
+    }
+  };
 
   // "내 사탕함 가기" 버튼 클릭 시 처리
   const handleGoToCandyBox = () => {
@@ -227,7 +239,10 @@ const HomePage = () => {
         {/* 버튼 */}
         <div className="flex flex-row space-x-2 items-center justify-center mt-10">
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              handleSendCandy();
+            }
+          }
             className="flex-1 h-12 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center px-5 py-6 shadow-gray-400 shadow-md"
           >
             사탕 보내기
