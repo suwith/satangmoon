@@ -19,9 +19,7 @@ import { useNavigate} from 'react-router-dom';
 import candyLogo from '../assets/candy_logo.svg';
 import { decodeUserInfo } from '../utils/UserUtils';
 import useUserInfo from '../hooks/useUserInfo';
-import useLogin from '../hooks/useLogin';
 import { useLocation } from 'react-router-dom';
-import { candy } from '../data/CandyData';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
@@ -45,14 +43,11 @@ const candyImages = {
 
 const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
-  const { kakaoLogin } = useLogin();
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
   const location = useLocation(); // 현재 경로 정보
 
   // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
   const isAuthorized = user?.id === decodedUser?.id;
-  console.log(user, decodedUser);
-
 
   const navigate = useNavigate();
 
@@ -64,10 +59,6 @@ const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCandy, setSelectedCandy] = useState(null);
-
-  console.log("🔥 user:", user);
-  console.log("🔥 user.candyCount:", user?.candyCount);
-  console.log("🔥 totalPages 계산:", Math.ceil((user?.candyCount || 0) / 6));
 
   // 전체 페이지 수 계산 (user.candyCount가 있을 때는 그것을 기준으로 페이지 수 계산)
   const totalPages = isAuthorized
@@ -81,12 +72,6 @@ const HomePage = () => {
       visibilityStatus: "ANONYMOUS",
       id: index,
     }));
-
-
-  console.log(totalPages);
-
-
-
 
   // 사탕 클릭 핸들러
   const handleCandyClick = (candy) => {

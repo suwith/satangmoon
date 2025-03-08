@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { decodeUserInfo } from "../utils/UserUtils";
 import useSendCandy from "../hooks/useSendCandy";
@@ -13,7 +13,7 @@ const candyDesigns = [candy1, candy2, candy3, candy4, candy5, candy6];
 
 const SendCandyModal = ({ onClose }) => {
   const { id: receiverId } = useParams(); // URL에서 받는 사람 ID 추출
-  const { sendCandy, loading, error, success } = useSendCandy();
+  const { sendCandy } = useSendCandy();
   const [step, setStep] = useState(1); // 1: 디자인 선택, 2: 메시지 입력
   const [selectedDesign, setSelectedDesign] = useState(null);
   const [message, setMessage] = useState("");
@@ -21,12 +21,6 @@ const SendCandyModal = ({ onClose }) => {
   const handleSend = () => {
     const senderId = decodeUserInfo().id; // 로그인한 유저 ID 가져오기
     const token = "YOUR_AUTH_TOKEN"; // 필요한 경우 인증 토큰 추가
-
-    // 값이 올바르게 설정되었는지 확인
-    console.log("보내는 사람 ID:", senderId);
-    console.log("받는 사람 ID:", receiverId);
-    console.log("메시지:", message);
-    console.log("선택한 사탕 디자인 번호:", selectedDesign);
 
     if (!receiverId || !selectedDesign || !message.trim()) {
       console.error("필수 데이터가 누락되었습니다.");
@@ -36,16 +30,6 @@ const SendCandyModal = ({ onClose }) => {
     sendCandy(senderId, receiverId, message, selectedDesign, token);
     onClose(); // 모달 닫기
   };
-
-  useEffect(() => {
-    console.log("📢 success 값 변경:", success); // ✅ success 변경 확인 로그
-    if (success) {
-      setTimeout(() => {
-        window.location.reload();
-      }, 500); // ✅ 0.5초 후 새로고침
-    }
-  }, [success]);
-
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
