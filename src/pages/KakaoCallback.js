@@ -12,7 +12,6 @@ function KakaoCallback() {
 
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
-        console.log("받은 토큰:", token);
 
         if (token) {
             localStorage.setItem("jwt", token);
