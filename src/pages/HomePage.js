@@ -20,6 +20,7 @@ import candyLogo from '../assets/candy_logo.svg';
 import { decodeUserInfo } from '../utils/UserUtils';
 import useUserInfo from '../hooks/useUserInfo';
 import { useLocation } from 'react-router-dom';
+import useLogin from '../hooks/useLogin';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
@@ -43,6 +44,7 @@ const candyImages = {
 
 const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
+  const { logout } = useLogin();
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
   const location = useLocation(); // 현재 경로 정보
 
@@ -281,6 +283,17 @@ const HomePage = () => {
           </div>
         )}
 
+        {/* 로그아웃 버튼 */}
+        {decodedUser && (
+          <div className="flex justify-center mt-4">
+            <button
+              className="text-gray-500 text-sm underline hover:text-gray-700"
+              onClick={ logout }
+            >
+              로그아웃
+            </button>
+          </div>
+        )}
 
       </div>
     </div>
