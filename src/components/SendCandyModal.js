@@ -87,12 +87,12 @@ const SendCandyModal = ({ onClose }) => {
               사탕과 함께 보낼 메세지를 작성해주세요
             </div>
 
-            <div className="w-full my-5">
+            <div className="w-full py-5 px-2" >
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="메시지를 입력하세요..."
-                className="w-auto resize-none h-80 bg-transparent focus:border-none focus:outline-none hover:border-none"
+                className="w-full resize-none h-80 bg-transparent focus:border-none focus:outline-none hover:border-none"
               />
             </div>
 
