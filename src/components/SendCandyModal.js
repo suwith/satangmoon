@@ -20,14 +20,13 @@ const SendCandyModal = ({ onClose }) => {
 
   const handleSend = () => {
     const senderId = decodeUserInfo().id; // 로그인한 유저 ID 가져오기
-    const token = "YOUR_AUTH_TOKEN"; // 필요한 경우 인증 토큰 추가
 
     if (!receiverId || !selectedDesign || !message.trim()) {
       console.error("필수 데이터가 누락되었습니다.");
       return;
     }
 
-    sendCandy(senderId, receiverId, message, selectedDesign, token);
+    sendCandy(senderId, receiverId, message, selectedDesign);
     onClose(); // 모달 닫기
   };
 

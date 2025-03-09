@@ -15,7 +15,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
       >
         {/* 발신자 이름 (항상 하단 고정) */}
         <div className="w-full text-center text-lg mt-24 font-semibold">
-          {senderName}님이 보낸 사탕메세지
+          {(senderName === "Anonymous")? "익명": senderName}님이 보낸 사탕메세지
         </div>
 
 

@@ -75,7 +75,7 @@ const HomePage = () => {
 
   // 사탕 클릭 핸들러
   const handleCandyClick = (candy) => {
-    if (candy.visibilityStatus === "MUTUAL") {
+    if (candy.visibilityStatus === "MUTUAL" || "EXPIRED") {
       setSelectedCandy(candy);
     }
   };
