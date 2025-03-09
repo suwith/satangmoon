@@ -109,12 +109,9 @@ const HomePage = () => {
     }
   };
   const handleCopyLink = () => {
-    if (!decodedUser?.shareableLink) {
-      alert("공유할 링크가 없습니다.");
-      return;
-    }
+    const shareableLink = `www.satangmoon.com/${decodedUser.id}`;
 
-    navigator.clipboard.writeText(decodedUser.shareableLink)
+    navigator.clipboard.writeText(shareableLink)
       .then(() => {
         alert("링크가 복사되었습니다! 🎉");
       })
