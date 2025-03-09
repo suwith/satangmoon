@@ -205,7 +205,7 @@ const HomePage = () => {
 
 
           {/* 페이지네이션 버튼 (양옆에 배치) */}
-          {candyList.length > 6 && (
+          {totalPages > 1 && (
             <>
               {currentPage > 0 && (
                 <button
