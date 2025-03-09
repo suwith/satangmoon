@@ -12,7 +12,17 @@ const useLogin = () => {
         window.location.href = KAKAO_AUTH_URL;
     };
 
-    return { kakaoLogin, user, error };
+    const logout = () => {
+        // localStorage에서 토큰 제거
+        localStorage.removeItem("jwt");
+        // 다른 저장된 데이터도 필요하다면 제거
+        localStorage.removeItem("returnUrl");
+        
+        // 홈페이지로 리다이렉트
+        window.location.href = "/";
+    };
+
+    return { kakaoLogin, logout, user, error };
 };
 
 export default useLogin;
