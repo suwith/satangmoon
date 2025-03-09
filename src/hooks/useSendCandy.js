@@ -1,15 +1,18 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
+import { getToken } from '../utils/token';
 
 const useSendCandy = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const sendCandy = async (senderId, receiverId, message, designType, token) => {
+  const sendCandy = async (senderId, receiverId, message, designType) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
+
+    const token = getToken();
 
     // senderId, receiverId를 integer로 변환
     const senderIdInt = parseInt(senderId, 10);
@@ -25,7 +28,7 @@ const useSendCandy = () => {
     try {
       const response = await axiosInstance.post(
         "/chocolates",
-        {}, // ✅ body는 비우고
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
