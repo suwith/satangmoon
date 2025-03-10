@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/oauth2/authorization/kakao", "destination": "https://backend.satangmoon.com/oauth2/authorization/kakao" },
+    { "source": "/oauth2/authorization/kakao", "destination": "https://www.satangmoon.com/oauth2/authorization/kakao" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
