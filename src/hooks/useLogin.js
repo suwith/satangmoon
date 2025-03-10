@@ -9,7 +9,7 @@ const useLogin = () => {
 
     // ✅ 카카오 로그인 버튼 클릭 시 카카오 로그인 페이지로 이동
     const kakaoLogin = (returnUrl = null) => {
-        window.location.href = KAKAO_AUTH_URL;
+        window.location.replace(KAKAO_AUTH_URL);
     };
 
     const logout = () => {
