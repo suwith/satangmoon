@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    { "source": "/oauth2/authorization/kakao", "destination": "https://backend.satangmoon.com/oauth2/authorization/kakao" },
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
