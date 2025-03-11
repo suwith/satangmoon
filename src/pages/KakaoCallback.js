@@ -1,40 +1,39 @@
-import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function KakaoCallback() {
+const BACKEND_URL = process.env.REACT_APP_BASE_URL;
+
+const KakaoCallback = () => {
     const navigate = useNavigate();
-    const processed = useRef(false);
 
     useEffect(() => {
-        if (processed.current) {
-            return;
-        }
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        if (code) {
+            console.log("✅ 카카오 인가 코드:", code);
 
-        console.log(urlParams);
-        console.log(token);
+            // 백엔드로 인가 코드 전송하여 액세스 토큰 요청
+            axios
+              .post(`${BACKEND_URL}/api/oauth/kakao`, { code })
+              .then((response) => {
+                  localStorage.setItem("jwt", response.data.token);
+                  navigate("/home"); // ✅ 로그인 성공 후 홈으로 이동
 
-        if (token) {
-            localStorage.setItem("jwt", token);
-
-            const returnUrl = localStorage.getItem("returnUrl");
-            if (returnUrl) {
-                localStorage.removeItem("returnUrl");
-                processed.current = true;
-                navigate(returnUrl);
-            } else {
-                processed.current = true;
-                navigate('/home');
-            }
+                  console.log(response.data.token)
+              })
+              .catch((error) => {
+                  console.error("❌ 카카오 로그인 실패:", error);
+                  navigate("/login?error=token_request_failed"); // 로그인 실패 시 에러 페이지 이동
+              });
         } else {
-            processed.current = true;
-            navigate('/');
+            console.error("❌ 인가 코드가 없습니다.");
+            navigate("/login?error=no_code");
         }
     }, [navigate]);
 
-    return <div>로그인 처리 중...</div>;
-}
+    return <div>카카오 로그인 처리 중...</div>;
+};
 
 export default KakaoCallback;
