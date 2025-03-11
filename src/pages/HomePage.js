@@ -21,6 +21,7 @@ import { decodeUserInfo } from '../utils/UserUtils';
 import useUserInfo from '../hooks/useUserInfo';
 import { useLocation } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
+import { FaSpinner } from 'react-icons/fa';
 
 const mobileCandyPositions = [
   { top: "28.8%", left: "20.3%" },
@@ -151,11 +152,22 @@ const HomePage = () => {
   }, []);
 
   if (loading) {
-    return <div>로딩 중...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screene">
+        <div className="flex flex-col items-center">
+          <FaSpinner className="animate-spin text-4xl text-pink-300 mb-4" />
+        </div>
+      </div>);
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screene">
+        <div className="flex flex-col items-center">
+          <p>{error}</p>
+          관리자에게 문의해주세요.
+        </div>
+      </div>);
   }
 
   return (
