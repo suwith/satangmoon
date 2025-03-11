@@ -7,6 +7,7 @@ const useSendCandy = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const user = useUserInfo();
 
   const sendCandy = async (senderId, receiverId, message, designType) => {
     setLoading(true);
@@ -14,7 +15,7 @@ const useSendCandy = () => {
     setSuccess(false);
 
     const token = getToken();
-    const user = useUserInfo();
+
 
     // senderId, receiverId를 integer로 변환
     const senderIdInt = parseInt(senderId, 10);
