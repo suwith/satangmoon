@@ -11,7 +11,7 @@ function KakaoCallback() {
         }
 
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('code');
+        const token = urlParams.get('token');
 
         console.log(urlParams);
         console.log(token);
