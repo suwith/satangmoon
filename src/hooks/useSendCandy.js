@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { getToken } from '../utils/token';
+import useUserInfo from './useUserInfo';
 
 const useSendCandy = () => {
   const [loading, setLoading] = useState(false);
@@ -13,6 +14,7 @@ const useSendCandy = () => {
     setSuccess(false);
 
     const token = getToken();
+    const user = useUserInfo();
 
     // senderId, receiverId를 integer로 변환
     const senderIdInt = parseInt(senderId, 10);
@@ -48,8 +50,14 @@ const useSendCandy = () => {
         window.location.reload();
       }
     } catch (err) {
-      console.error("🚨 에러 발생:", err.response ? err.response.data : err.message);
-      setError(err.response ? err.response.data.message : "메시지를 보내는 데 실패했습니다.");
+      if (err.response) {
+        if (err.response.status === 403) {
+          alert(`${user.name}님에게 이미 사탕 메세지를 보낸 적이 있어요!`);
+        } else {
+          setError(err.response.data.message || "메시지를 보내는 데 실패했습니다.");
+        }
+      } else {
+        setError("서버에 연결할 수 없습니다.");}
     } finally {
       setLoading(false);
     }
