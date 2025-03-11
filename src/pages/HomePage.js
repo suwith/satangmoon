@@ -46,6 +46,8 @@ const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
   const { logout } = useLogin();
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
+  console.log(decodedUser, user);
+
   const location = useLocation(); // 현재 경로 정보
 
   // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
