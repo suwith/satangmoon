@@ -24,11 +24,11 @@ import useLogin from '../hooks/useLogin';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
-  { top: "28.8%", left: "20.5%" },
+  { top: "28.8%", left: "20.3%" },
   { top: "28.8%", left: "50%" },
-  { top: "28.8%", left: "80%" },
-  { top: "53.9%", left: "38.4%" },
-  { top: "53.9%", left: "60.3%" },
+  { top: "28.8%", left: "80.2%" },
+  { top: "53.9%", left: "35.4%" },
+  { top: "53.9%", left: "65.3%" },
   { top: "78.1%", left: "50%" }
 ];
 
