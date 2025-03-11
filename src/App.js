@@ -18,7 +18,6 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/:id" element={<HomePage />} />
-            <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
             <Route path="/oauth2/success" element={<KakaoCallback />} />
           </Routes>
         </div>
