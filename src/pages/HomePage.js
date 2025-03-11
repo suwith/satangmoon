@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 // 이미지
 import caseEmpty from '../assets/candy_box.svg';
 // 사탕 이미지 (design_type에 따라 사용)
@@ -22,13 +22,21 @@ import useUserInfo from '../hooks/useUserInfo';
 import { useLocation } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 
-// 사탕이 배치될 위치 (각 페이지별 6개씩)
-const candyPositions = [
+const mobileCandyPositions = [
   { top: "28.8%", left: "20.3%" },
   { top: "28.8%", left: "50%" },
   { top: "28.8%", left: "80.2%" },
   { top: "53.9%", left: "33.2%" },
   { top: "53.9%", left: "65.3%" },
+  { top: "78.1%", left: "50%" }
+];
+
+const desktopCandyPositions = [
+  { top: "28.8%", left: "23.5%" },
+  { top: "28.8%", left: "50%" },
+  { top: "28.8%", left: "76.4%" },
+  { top: "53.9%", left: "35.4%" },
+  { top: "53.9%", left: "63.3%" },
   { top: "78.1%", left: "50%" }
 ];
 
@@ -62,6 +70,7 @@ const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCandy, setSelectedCandy] = useState(null);
+  const [candyPositions, setCandyPositions] = useState(desktopCandyPositions);
 
   // 전체 페이지 수 계산 (user.candyCount가 있을 때는 그것을 기준으로 페이지 수 계산)
   const totalPages = isAuthorized
@@ -123,6 +132,23 @@ const HomePage = () => {
         alert("링크 복사에 실패했습니다. 다시 시도해주세요.");
       });
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        // 모바일 환경
+        setCandyPositions(mobileCandyPositions);
+      } else {
+        // 데스크톱 환경
+        setCandyPositions(desktopCandyPositions);
+      }
+    };
+
+    handleResize(); // 초기 로딩 시에도 한 번 실행
+    window.addEventListener("resize", handleResize); // 화면 크기 변경 시 감지
+
+    return () => window.removeEventListener("resize", handleResize); // 클린업
+  }, []);
 
   if (loading) {
     return <div>로딩 중...</div>;
