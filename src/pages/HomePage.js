@@ -24,12 +24,12 @@ import useLogin from '../hooks/useLogin';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
-  { top: "28.8%", left: "23.5%" },
-  { top: "28.8%", left: "50%" },
-  { top: "28.8%", left: "76.4%" },
-  { top: "53.9%", left: "35.4%" },
-  { top: "53.9%", left: "63.3%" },
-  { top: "78.1%", left: "50%" }
+  { top: "27vh", left: "22vw" },
+  { top: "27vh", left: "50vw" },
+  { top: "27vh", left: "78vw" },
+  { top: "52vh", left: "34vw" },
+  { top: "52vh", left: "65vw" },
+  { top: "76vh", left: "50vw" }
 ];
 
 // 사탕 이미지 매핑
@@ -158,8 +158,8 @@ const HomePage = () => {
         </div>
 
         {/* 사탕 박스 컨테이너 */}
-        <div className="relative w-full aspect-[6/5] flex justify-center">
-          <img
+        <div className="relative w-[90vw] max-w-[400px] aspect-[6/5] flex justify-center">
+        <img
             src={caseEmpty}
             alt="사탕 상자"
             className="w-full h-auto object-contain"

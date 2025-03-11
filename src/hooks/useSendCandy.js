@@ -7,7 +7,6 @@ const useSendCandy = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const user = useUserInfo();
 
   const sendCandy = async (senderId, receiverId, message, designType) => {
     setLoading(true);
@@ -53,7 +52,7 @@ const useSendCandy = () => {
     } catch (err) {
       if (err.response) {
         if (err.response.status === 403) {
-          alert(`${user.name}님에게 이미 사탕 메세지를 보낸 적이 있어요!`);
+          alert("이미 사탕 메세지를 보낸 적이 있어요!");
         } else {
           setError(err.response.data.message || "메시지를 보내는 데 실패했습니다.");
         }
