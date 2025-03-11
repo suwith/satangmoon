@@ -153,8 +153,8 @@ const HomePage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screene">
-        <div className="flex flex-col items-center">
+      <div className="flex w-full h-full justify-center items-center min-h-screen">
+        <div className="flex w-full h-full flex-col items-center">
           <FaSpinner className="animate-spin text-4xl text-pink-300 mb-4" />
         </div>
       </div>);
