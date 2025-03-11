@@ -24,12 +24,12 @@ import useLogin from '../hooks/useLogin';
 
 // 사탕이 배치될 위치 (각 페이지별 6개씩)
 const candyPositions = [
-  { top: "27vh", left: "22vw" },
-  { top: "27vh", left: "50vw" },
-  { top: "27vh", left: "78vw" },
-  { top: "52vh", left: "34vw" },
-  { top: "52vh", left: "65vw" },
-  { top: "76vh", left: "50vw" }
+  { top: "28.8%", left: "20.5%" },
+  { top: "28.8%", left: "50%" },
+  { top: "28.8%", left: "80%" },
+  { top: "53.9%", left: "38.4%" },
+  { top: "53.9%", left: "60.3%" },
+  { top: "78.1%", left: "50%" }
 ];
 
 // 사탕 이미지 매핑
