@@ -27,7 +27,7 @@ const candyPositions = [
   { top: "28.8%", left: "20.3%" },
   { top: "28.8%", left: "50%" },
   { top: "28.8%", left: "80.2%" },
-  { top: "53.9%", left: "33%" },
+  { top: "53.9%", left: "33.2%" },
   { top: "53.9%", left: "65.3%" },
   { top: "78.1%", left: "50%" }
 ];
