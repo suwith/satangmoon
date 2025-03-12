@@ -211,7 +211,7 @@ const HomePage = () => {
 
               <div className="flex items-start">
                 <span className="text-primary font-bold mr-2">4.</span>
-                <p>그 외 초콜릿은 <span className="font-bold">3월 15일부터 익명으로 메시지가 공개</span>돼요.</p>
+                <p>그 외의 사탕은 <span className="font-bold">3월 15일부터 익명으로 메시지가 공개</span>돼요.</p>
               </div>
             </div>
 
