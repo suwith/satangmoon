@@ -188,7 +188,6 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4">
-      //사탕문 가이드 팝업
       {showGuide && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-[90%] max-w-sm mx-auto shadow-lg px-10">
