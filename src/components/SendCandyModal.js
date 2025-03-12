@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { decodeUserInfo } from "../utils/UserUtils";
 import useSendCandy from "../hooks/useSendCandy";
@@ -29,6 +29,20 @@ const SendCandyModal = ({ onClose }) => {
     sendCandy(senderId, receiverId, message, selectedDesign);
     onClose(); // 모달 닫기
   };
+
+  const handleClose = () => {
+    setSelectedDesign(null);
+    setMessage("");
+    setStep(1);
+    onClose();
+  };
+
+  useEffect(() => {
+    setSelectedDesign(null);
+    setMessage("");
+    setStep(1);
+  }, []);
+
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -61,7 +75,7 @@ const SendCandyModal = ({ onClose }) => {
             <div className="flex w-full gap-2 mt-1.5">
               {/* 닫기 버튼 */}
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg font-bold"
               >
                 닫기
