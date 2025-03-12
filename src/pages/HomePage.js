@@ -134,6 +134,22 @@ const HomePage = () => {
       });
   };
 
+  let hideGuide = localStorage.getItem('hideGuide');
+  if (hideGuide === null) {
+    localStorage.setItem('hideGuide', 'false');
+    hideGuide = 'false';
+  }
+
+  const [showGuide, setShowGuide] = useState(hideGuide !== 'true');
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+
+  const closeGuide = () => {
+    if(dontShowAgain){
+      localStorage.setItem('hideGuide', 'true');
+    }
+    setShowGuide(false);
+  }
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
@@ -172,6 +188,61 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4">
+      //사탕문 가이드 팝업
+      {showGuide && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[90%] max-w-sm mx-auto shadow-lg px-10">
+            <h2 className="text-2xl font-bold mb-6 text-center text-primary">사탕문 이용 안내 🍬</h2>
+
+            <div className="space-y-4 mb-6">
+              <div className="flex items-start">
+                <span className="text-primary font-bold mr-2">1.</span>
+                <p><span className="font-bold">화이트데이 전날(3월 13일)</span>까지 익명으로 사탕과 메시지를 보낼 수 있어요.</p>
+              </div>
+
+              <div className="flex items-start">
+                <span className="text-primary font-bold mr-2">2.</span>
+                <p>보낸 메세지는 <span className="font-bold">화이트데이(3월 14일)</span>까지 <span className="font-bold">확인할 수 없어요.</span></p>
+              </div>
+
+              <div className="flex items-start">
+                <span className="text-primary font-bold mr-2">3.</span>
+                <p><span className="font-bold">서로 사탕을 보냈다면</span>, 화이트데이에 <span className="font-bold">이름과 메시지를 확인</span>할 수 있어요.</p>
+              </div>
+
+              <div className="flex items-start">
+                <span className="text-primary font-bold mr-2">4.</span>
+                <p>그 외 초콜릿은 <span className="font-bold">3월 15일부터 익명으로 메시지가 공개</span>돼요.</p>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-gray-600">💌 마음을 전할 준비 되셨나요?</p>
+              <p className="text-gray-600">소중한 사람에게 사탕을 보내보세요!</p>
+            </div>
+
+            <div className="flex items-center justify-between mt-4">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="dontShowAgain"
+                  checked={dontShowAgain}
+                  onChange={(e) => setDontShowAgain(e.target.checked)}
+                  className="mr-2"
+                />
+                <label htmlFor="dontShowAgain" className="text-sm text-gray-600">다시 보지 않기</label>
+              </div>
+              <button
+                onClick={closeGuide}
+                className="px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary-dark"
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex relative justify-center h-full my-7">
         <img src={candyLogo} alt="candyLogo" className="w-28 h-auto object-contain" />
       </div>
