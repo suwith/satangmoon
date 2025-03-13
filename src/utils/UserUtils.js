@@ -14,6 +14,7 @@ export const decodeUserInfo = () => {
         const decoded = jwtDecode(token);
         return {
             id: decoded.sub,
+            exp: decoded.exp,
             name: decoded.name,
             email: decoded.email,
             shareableLink: decoded.shareableLink,
