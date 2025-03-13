@@ -13,7 +13,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
           height: "600px",
         }}
       >
-        <div className="flex flex-col w-64 text-center">
+        <div className="flex flex-col w-64 text-center items-center justify-center content-center">
         {/* 발신자 이름 (항상 하단 고정) */}
         <div className="w-full flex text-center text-lg mt-24 font-semibold">
           {(senderName === "Anonymous")? "익명": senderName}님이 보낸 사탕메세지
@@ -22,7 +22,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
 
         {/* 메시지 내용 (왼쪽 정렬 & 중앙 배치) */}
           <div className="flex-1 flex w-64 h-80">
-            <div className="text-lg w-full py-5 px-2 overflow-y-auto max-h-80">
+            <div className="text-lg w-full py-5 px-2 overflow-y-auto h-80">
               {message}
             </div>
           </div>
