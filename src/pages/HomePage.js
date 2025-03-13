@@ -22,6 +22,7 @@ import useUserInfo from '../hooks/useUserInfo';
 import { useLocation } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 import { FaSpinner } from 'react-icons/fa';
+import { BsFillPatchQuestionFill } from 'react-icons/bs';
 
 const mobileCandyPositions = [
   { top: "28.8%", left: "20.3%" },
@@ -147,6 +148,14 @@ const HomePage = () => {
     }
     setShowGuide(false);
   }
+  const [showGuide2, setShowGuide2] = useState(false);
+
+  const openGuide2 = () => {
+    setShowGuide2(true);
+  }
+  const closeGuide2 = () => {
+    setShowGuide2(false);
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -241,8 +250,59 @@ const HomePage = () => {
         </div>
       )}
 
-      <div className="flex relative justify-center h-full my-7">
+      {showGuide2 && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[90%] max-w-sm mx-auto shadow-lg px-10">
+            <h3 className="text-xl font-bold mb-10 text-center text-primary">오류 관련 공지</h3>
+
+            <div className="space-y-4 mb-10">
+              <div className="flex flex-col">
+                <p>Q. 내 사탕함에 사탕이 안 떠요!</p>
+                <p>A. 최초 로그인시 발급된 토큰이 만료되어 발생하는 오류로 로그아웃 후 재로그인 해주세요.</p>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center text-sm">
+              <p className="text-gray-600">오류사항 관련 문의는 <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSevBldlDf-TXg2dfBmmRXFOSqyMcSf4-9k6NAwYMbJIRh0TaQ/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline font-bold"
+              >
+                이곳
+              </a>
+                에서, </p>
+              <p className="text-gray-600">그외 문의 사항은 인스타그램 <a
+                href="https://www.instagram.com/satang.moon?igsh=NTZnaTg0NjJ2MTJx&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-yellow-800 underline font-bold"
+              >
+                @satang.moon
+              </a>으로 연락주세요!</p>
+            </div>
+
+            <div className="flex items-center justify-end mt-4">
+              <button
+                onClick={closeGuide2}
+                className="px-4 py-2 bg-primary text-black rounded-lg hover:bg-primary-dark"
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex justify-center items-center h-full my-7 relative w-full">
         <img src={candyLogo} alt="candyLogo" className="w-28 h-auto object-contain" />
+        <BsFillPatchQuestionFill className="absolute w-6 h-6 right-4 text-yellow-800"
+                                 onClick={openGuide2}/>
+      </div>
+
+      <div className="flex justify-center items-center h-full my-7 relative w-full">
+        <img src={candyLogo} alt="candyLogo" className="w-28 h-auto object-contain" />
+        <BsFillPatchQuestionFill className="absolute w-6 h-6 right-4 text-yellow-800"
+                                 onClick={openGuide2}/>
       </div>
 
       <div className="w-full max-w-sm justify-center h-full relative">
