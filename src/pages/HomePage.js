@@ -55,7 +55,7 @@ const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
   const { logout } = useLogin();
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
-
+  console.log(decodedUser);
   const location = useLocation(); // 현재 경로 정보
 
   // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
@@ -166,14 +166,16 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", handleResize); // 클린업
   }, []);
 
+  const [hasAlerted, setHasAlerted] = useState(false);
+
   useEffect(() => {
-    //최초 로그인시 발급퇸 토큰 만료일 때 재로그인 팝업
-    if(Date.now() > decodedUser.exp){
-      console.log(decodedUser.exp);
+    if (decodedUser?.exp && Date.now() > decodedUser.exp && !hasAlerted) {
+      setHasAlerted(true); // 알림을 한 번만 띄우도록 설정
       alert("세션이 만료되었습니다. 다시 로그인 해주세요!");
       navigate("/");
     }
-  },[]);
+  }, [decodedUser, navigate, hasAlerted]);
+
 
 
 
