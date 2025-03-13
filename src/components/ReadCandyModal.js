@@ -21,8 +21,8 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
 
 
         {/* 메시지 내용 (왼쪽 정렬 & 중앙 배치) */}
-          <div className="flex-1 flex pt-4 w-64 h-1/4">
-            <div className="text-lg w-full py-5 px-2 overflow-y-auto max-h-32">
+          <div className="flex-1 flex pt-4 w-64 h-80">
+            <div className="text-lg w-full py-5 px-2 overflow-y-auto max-h-80">
               {message}
             </div>
           </div>
