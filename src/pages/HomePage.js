@@ -166,19 +166,6 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", handleResize); // 클린업
   }, []);
 
-  const [hasAlerted, setHasAlerted] = useState(false);
-
-  useEffect(() => {
-    if (decodedUser?.exp && Date.now() > decodedUser.exp && !hasAlerted) {
-      setHasAlerted(true); // 알림을 한 번만 띄우도록 설정
-      alert("세션이 만료되었습니다. 다시 로그인 해주세요!");
-      navigate("/");
-    }
-  }, [decodedUser, navigate, hasAlerted]);
-
-
-
-
   if (loading) {
     return (
       <div className="flex w-full h-full justify-center items-center min-h-screen">
