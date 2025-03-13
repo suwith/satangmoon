@@ -31,7 +31,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
           {/* 닫기 버튼 (오른쪽 상단) */}
         <button
           onClick={onClose}
-          className=" w-full h-12 content-center mt-6 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center shadow-gray-400 shadow-md"
+          className=" w-full h-12 content-center mt-8 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center shadow-gray-400 shadow-md"
         >
           닫기
         </button>
