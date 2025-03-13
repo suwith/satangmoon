@@ -63,14 +63,6 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
-  //최초 로그인시 발급퇸 토큰 만료일 때 재로그인 팝업
-  if(Date.now() > decodedUser.exp){
-    console.log(decodedUser.exp);
-    alert("세션이 만료되었습니다. 다시 로그인 해주세요!");
-    navigate("/");
-  }
-
-
   // useCandy 훅을 사용하여 API 데이터를 가져옴
   const { candyList } = useCandy();
 
@@ -173,6 +165,17 @@ const HomePage = () => {
 
     return () => window.removeEventListener("resize", handleResize); // 클린업
   }, []);
+
+  useEffect(() => {
+    //최초 로그인시 발급퇸 토큰 만료일 때 재로그인 팝업
+    if(Date.now() > decodedUser.exp){
+      console.log(decodedUser.exp);
+      alert("세션이 만료되었습니다. 다시 로그인 해주세요!");
+      navigate("/");
+    }
+  },[]);
+
+
 
   if (loading) {
     return (
