@@ -13,7 +13,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
           height: "600px",
         }}
       >
-        <div className="flex w-64 text-center">
+        <div className="flex flex-col w-64 text-center">
         {/* 발신자 이름 (항상 하단 고정) */}
         <div className="w-full flex text-center text-lg mt-24 font-semibold">
           {(senderName === "Anonymous")? "익명": senderName}님이 보낸 사탕메세지
