@@ -55,7 +55,7 @@ const HomePage = () => {
   const {user, loading, error} =  useUserInfo(); // 페이지 유저 정보
   const { logout } = useLogin();
   const decodedUser = decodeUserInfo(); // 로그인한 유저 정보
-  console.log(decodedUser);
+
   const location = useLocation(); // 현재 경로 정보
 
   // 로그인한 유저의 KakaoId와 URL의 KakaoId 비교
@@ -172,8 +172,6 @@ const HomePage = () => {
     if (decodedUser?.exp) {
       const tokenExp = Number(decodedUser.exp) * 1000; // 문자열일 경우 숫자로 변환
       const now = Date.now();
-
-      console.log(`토큰 만료 시간: ${tokenExp}, 현재 시간: ${now}`); // 디버깅용 로그
 
       if (!hasAlerted && now > tokenExp) {
         setHasAlerted(true); // 알림을 한 번만 띄우도록 설정
