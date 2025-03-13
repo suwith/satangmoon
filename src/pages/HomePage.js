@@ -293,11 +293,6 @@ const HomePage = () => {
           </div>
         </div>
       )}
-      <div className="flex justify-center items-center h-full my-7 relative w-full">
-        <img src={candyLogo} alt="candyLogo" className="w-28 h-auto object-contain" />
-        <BsFillPatchQuestionFill className="absolute w-6 h-6 right-4 text-yellow-800"
-                                 onClick={openGuide2}/>
-      </div>
 
       <div className="flex justify-center items-center h-full my-7 relative w-full">
         <img src={candyLogo} alt="candyLogo" className="w-28 h-auto object-contain" />
