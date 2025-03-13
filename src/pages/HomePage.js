@@ -166,6 +166,24 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", handleResize); // 클린업
   }, []);
 
+  const [hasAlerted, setHasAlerted] = useState(false);
+
+  useEffect(() => {
+    if (decodedUser?.exp) {
+      const tokenExp = Number(decodedUser.exp) * 1000; // 문자열일 경우 숫자로 변환
+      const now = Date.now();
+
+      console.log(`토큰 만료 시간: ${tokenExp}, 현재 시간: ${now}`); // 디버깅용 로그
+
+      if (!hasAlerted && now > tokenExp) {
+        setHasAlerted(true); // 알림을 한 번만 띄우도록 설정
+        alert("세션이 만료되었습니다. 다시 로그인 해주세요!");
+        navigate("/");
+      }
+    }
+  }, [decodedUser, navigate, hasAlerted]);
+
+
   if (loading) {
     return (
       <div className="flex w-full h-full justify-center items-center min-h-screen">
