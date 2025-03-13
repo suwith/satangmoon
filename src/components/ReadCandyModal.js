@@ -21,7 +21,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
 
 
         {/* 메시지 내용 (왼쪽 정렬 & 중앙 배치) */}
-          <div className="flex-1 flex pt-4 w-64 h-80">
+          <div className="flex-1 flex w-64 h-80">
             <div className="text-lg w-full py-5 px-2 overflow-y-auto max-h-80">
               {message}
             </div>
@@ -31,7 +31,7 @@ const ReadCandyModal = ({ isOpen, onClose, senderName, message }) => {
           {/* 닫기 버튼 (오른쪽 상단) */}
         <button
           onClick={onClose}
-          className=" w-full h-12 content-center mb-4 mt-1.5 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center shadow-gray-400 shadow-md"
+          className=" w-full h-12 content-center mb-4 mt-3 bg-pink-200 text-amber-950 flex justify-center items-center rounded-lg font-bold text-center shadow-gray-400 shadow-md"
         >
           닫기
         </button>
