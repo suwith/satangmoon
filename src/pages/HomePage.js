@@ -179,7 +179,8 @@ const HomePage = () => {
       <div className="flex justify-center items-center min-h-screene">
         <div className="flex flex-col items-center">
           <p>{error}</p>
-          관리자에게 문의해주세요.
+          현재 서버 점검중입니다.
+          10분 뒤 다시 시도해주세요.
         </div>
       </div>);
   }
